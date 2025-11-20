@@ -1,6 +1,6 @@
-import pygame # type: ignore
+import pygame
 import random
-from pygame.locals import ( # type: ignore
+from pygame.locals import (
     K_UP, K_DOWN, K_LEFT, K_RIGHT, QUIT, KEYDOWN
 )
 
@@ -68,7 +68,7 @@ class Snake(GameObject):
     
     def update_direction(self):
         if self.next_direction:
-            if ((self.next_direction[0] * -1, self.next_direction[1] * -1) 
+            if ((self.next_direction[0] * -1, self.next_direction[1] * -1)
                     != self.direction):
                 self.direction = self.next_direction
             self.next_direction = None

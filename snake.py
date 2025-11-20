@@ -41,7 +41,7 @@ class Apple(GameObject):
         x = random.randint(0, GRID_WIDTH - 1) * GRID_SIZE
         y = random.randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         self.position = (x, y)
-    
+
     def draw(self, surface):
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(surface, self.body_color, rect)
@@ -50,7 +50,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     def __init__(self):
-        super().__init__()    
+        super().__init__()
         self.body_color = SNAKE_COLOR
         self.reset()
 
@@ -62,32 +62,32 @@ class Snake(GameObject):
         self.direction = RIGHT
         self.next_direction = None
         self.last = None
-    
+
     def get_head_position(self):
         return self.positions[0]
-    
+
     def update_direction(self):
         if self.next_direction:
             if ((self.next_direction[0] * -1, self.next_direction[1] * -1)
                     != self.direction):
                 self.direction = self.next_direction
             self.next_direction = None
-    
+
     def move(self):
         self.last = self.positions[-1] if self.positions else None
         head = self.get_head_position()
-        x, y = head 
+        x, y = head
         dx, dy = self.direction
         new_x = (x + dx * GRID_SIZE) % SCREEN_WIDTH
         new_y = (y + dy * GRID_SIZE) % SCREEN_HEIGHT
         new_head = (new_x, new_y)
         if new_head in self.positions[:-1]:
             self.reset()
-            return 
+            return
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
             self.positions.pop()
-    
+
     def draw(self, surface):
         if self.last:
             last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
@@ -122,20 +122,20 @@ def main():
     snake = Snake()
     apple = Apple()
     base_speed = 5
-    
+
     while True:
         handle_keys(snake)
         snake.update_direction()
         snake.move()
-        
+
         if snake.get_head_position() == apple.position:
-            snake.length += 1  
-            apple.randomize_position() 
+            snake.length += 1
+            apple.randomize_position()
             while apple.position in snake.positions:
                 apple.randomize_position()
             if snake.length % 1 == 0:
                 base_speed += 0.5
-                
+
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw(screen)
         apple.draw(screen)
